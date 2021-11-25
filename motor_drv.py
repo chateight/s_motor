@@ -66,15 +66,17 @@ class motor_drive:
       GPIO.add_event_callback(self.r_right, self.dir_sw_callback)
 
   def dir_sw_callback(self, i_pin):
+      # if both bottons are pushed, stop rotation
+      # check the sw level and continue rotation if it is pushed
       if i_pin == self.r_left:
         while GPIO.input(self.r_left) == 0:
           if GPIO.input(self.r_right) != 0:
-            self.rotate(-1)   # cw
+            self.rotate(-1)   # ccw
             time.sleep(0.03)
       else:
         while GPIO.input(self.r_right) == 0:
           if GPIO.input(self.r_left) != 0:
-            self.rotate(1)    # ccw        
+            self.rotate(1)    # cw        
             time.sleep(0.03) 
     
   def rotate(self, r_dir):
@@ -92,15 +94,12 @@ class motor_drive:
       StepCount = len(Seq)
       StepDir = r_dir # Set to 1 or 2 for clockwise
                   # Set to -1 or -2 for anti-clockwise
-
-# Wait time
-      WaitTime = 10/float(1000)
-
+# Wait time (it defines rotation frequency)
+      WaitTime = 3/float(1000)
 # Initialise variables
       StepCounter = 0
-
 # Start main lcls
-      for count in range(64):
+      for count in range(32):
         for pin in range(0, 4):
           xpin = self.StepPins[pin]
           if Seq[StepCounter][pin]!=0:
@@ -110,14 +109,12 @@ class motor_drive:
             GPIO.output(xpin, False)
 
         StepCounter += StepDir
-
 # If we reach the end of the sequence
 # start again
         if (StepCounter>=StepCount):
             StepCounter = 0
         if (StepCounter<0):
             StepCounter = StepCount+StepDir
-
 # Wait before moving on
         time.sleep(WaitTime)
 # motor power off
@@ -133,3 +130,4 @@ class motor_drive:
 md = motor_drive()
 # wait for sw falling edge
 md.callback()
+
