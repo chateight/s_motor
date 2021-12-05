@@ -72,12 +72,12 @@ class motor_drive:
         while GPIO.input(self.r_left) == 0:
           if GPIO.input(self.r_right) != 0:
             self.rotate(-1)   # ccw
-            time.sleep(0.03)
+            time.sleep(0.1)
       else:
         while GPIO.input(self.r_right) == 0:
           if GPIO.input(self.r_left) != 0:
             self.rotate(1)    # cw        
-            time.sleep(0.03) 
+            time.sleep(0.1) 
     
   def rotate(self, r_dir):
 # Define advanced sequence
@@ -95,7 +95,7 @@ class motor_drive:
       StepDir = r_dir # Set to 1 or 2 for clockwise
                   # Set to -1 or -2 for anti-clockwise
 # Wait time (it defines rotation frequency)
-      WaitTime = 3/float(1000)
+      WaitTime = 5/float(1000)
 # Initialise variables
       StepCounter = 0
 # Start main lcls
@@ -128,6 +128,8 @@ class motor_drive:
 # to make "motor_drive" class instance
 #
 md = motor_drive()
+md.rotate(1)
+md.rotate(-1)
 # wait for sw falling edge
 md.callback()
 
