@@ -1,4 +1,4 @@
-# s_motor with Raspberry PI
+# stepping motor Raspberry PI controles
 
-control a stepping motor using RPi.GPIO library
+control a stepping motor using RPi.GPIO library with Raspberry Pi
 
